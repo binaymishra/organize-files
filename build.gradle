@@ -21,6 +21,7 @@ repositories {
 
 dependencies {
     implementation 'commons-io:commons-io:2.6'
+    implementation 'org.apache.commons:commons-lang3:3.10'
     implementation 'org.springframework.boot:spring-boot-starter'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'

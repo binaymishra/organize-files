@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.springframework.beans.factory.annotation.Value;
 
 @Slf4j
@@ -22,7 +23,8 @@ public class OrganizeFileSimpleImpl implements OrganizeFile {
   @Override
   public void organize(String folderPath) {
 
-    log.info("Folder Name Format: {}", folderNameFormat);
+    log.info("Folder Name Format: {}, e.g {}", folderNameFormat,
+        DateFormatUtils.format(new Date(), folderNameFormat));
 
     organizeFiles(folderPath);
 
@@ -53,13 +55,15 @@ public class OrganizeFileSimpleImpl implements OrganizeFile {
     for (Map.Entry<String, List<File>> entry : group.entrySet()) {
       File dateFolder = Paths.get(folder.getAbsolutePath(), entry.getKey()).toFile();
       for (File file : entry.getValue()) {
-        if (file.isDirectory()) {
-          log.info("Directory: {}", file.getAbsolutePath());
+        if(file.isDirectory() && !file.getName().matches("[0-9]+-[a-zA-Z]+")) {
+          organizeFiles(file.getAbsolutePath());
         } else {
           try {
-            FileUtils.moveFileToDirectory(file, dateFolder, true);
+            if(!file.isDirectory()) {
+              FileUtils.moveFileToDirectory(file, dateFolder, true);
+            }
           } catch (IOException e) {
-            log.error("Unable to organize file. Reason " + e.getMessage(), e);
+            log.warn("Unable to organize file: {} Reason {}", file.getAbsolutePath(), e.getMessage());
           }
         }
       }
