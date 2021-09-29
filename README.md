@@ -36,3 +36,6 @@ Update your <folder path> in run.sh as exactly below e.g as sample below.
 ````
 $ sh run.sh 
 ````
+
+
+[Machine Learning in Java is Speeding Image Processing](https://www.infoworld.com/article/3601711/machine-learning-in-java-is-speeding-image-processing.html)
